@@ -1,0 +1,25 @@
+{
+  "name": "vimo",
+  "version": "1.0.0",
+  "description": "text editor with vim functions",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ./app/main/main.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "author": "kjs",
+  "license": "ISC",
+  "devDependencies": {
+    "css-loader": "^7.1.2",
+    "electron": "^36.2.0",
+    "style-loader": "^4.0.0"
+  },
+  "dependencies": {
+    "@replit/codemirror-vim": "^6.3.0",
+    "codemirror": "^6.0.1",
+    "moment": "^2.30.1",
+    "webpack": "^5.99.8",
+    "webpack-cli": "^6.0.1"
+  }
+}
