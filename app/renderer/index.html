@@ -11,12 +11,23 @@
       http-equiv="X-Content-Security-Policy"
       content="default-src 'self'; script-src 'self'"
     />
+    <link rel="stylesheet" href="../lib/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/codemirror.css">
+    <script src="../lib/bootstrap.min.js"></script>
     <title>Hello from Electron renderer!</title>
   </head>
   <body>
-    <h1>Hello from Electron renderer!</h1>
-    <p>👋</p>
-    <p id="info"></p>
+    <div id="app-container" class="vw-100 vh-100 container m-0">
+      <div class="row vw-100 vh-100">
+        <div id="side-action" class="col-1 vh-100 bg-primary"></div>
+        <div id="folder-tree" class="col-2 vh-100 bg-success"></div>
+        <div id="root" class="col-9 vh-100 bg-danger-subtle">
+          <div id="tab-area" style="height: 5%;">tab area</div>
+          <div id="top-info" style="height: 5%;">file information</div>
+          <div id="textarea" style="height: 80%;"></div>
+        </div>
+      </div>
+    </div>
   </body>
-  <script src="../renderer/bundle.js"></script>
+  <script src="./bundle.js"></script>
 </html>

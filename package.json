@@ -4,9 +4,10 @@
   "description": "text editor with vim functions",
   "main": "main.js",
   "scripts": {
-    "start": "electron ./app/main/main.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack"
+    "build": "webpack",
+    "start": "electron ./app/main/main.js",
+    "build-start": "npm run build && electron ./app/main/main.js"
   },
   "author": "kjs",
   "license": "ISC",
