@@ -2,6 +2,8 @@ const { vim } = require('@replit/codemirror-vim')
 const { basicSetup } = require('codemirror')
 const { EditorView, keymap } = require('@codemirror/view')
 const { indentWithTab } = require('@codemirror/commands')
+const { Text } = require('@codemirror/state')
+
 
 // 내가 만든 기능 (함수)
 const sayHelloCommand = (view) => {

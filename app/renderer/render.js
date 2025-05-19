@@ -1,1 +1,5 @@
-import "./editor/codemirror"
+import "./editor/js/codemirror"
+
+test.hello()
+
+fileList.getFile()
