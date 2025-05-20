@@ -14,8 +14,13 @@ contextBridge.exposeInMainWorld('test', {
     }
 })
 
-contextBridge.exposeInMainWorld('fileList', {
-    getFile: () => ipcRenderer.on('file-list', (event, value) => {
-        console.log(value)
-    })
+// contextBridge.exposeInMainWorld('fileList', {
+//     getFile: () => ipcRenderer.on('file-list', (event, value) => {
+//         console.log(value)
+//     })
+// })
+
+contextBridge.exposeInMainWorld('fileAPI', {
+    selectFolder: () => ipcRenderer.invoke('dialog:openFolder'),
+    selectFile: () => ipcRenderer.invoke('dialog:openFile')
 })
