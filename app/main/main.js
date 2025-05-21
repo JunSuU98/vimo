@@ -3,7 +3,6 @@ const path = require('node:path')
 const fs = require('fs')
 const { dialog } = require('electron')
 
-// const fileList = fs.readdirSync("/Users/jun/Desktop/test")
 
 const createWindow = () => {
     const win = new BrowserWindow({
@@ -16,9 +15,6 @@ const createWindow = () => {
         }
     })
 
-    // win.loadFile('../renderer/index.html').then(() => {
-    //     win.webContents.send('file-list', fileList)
-    // })
     win.loadFile('../renderer/index.html')
 }
 
@@ -42,39 +38,52 @@ async function handleFolderOpen (){
     if (!canceled){
         let folderData = {
             folderPath: filePaths[0],
-            // folderFiles: fs.readdir(filePaths[0], {withFileTypes: true})
             folderFiles: await exploreFolder(filePaths[0])
         }
 
-        console.log("print total file", folderData)
         return folderData
     }
 }
 ipcMain.handle('dialog:openFolder', handleFolderOpen)
 
-// 폴더 탐색 (하위 구조 만들기)
-async function exploreFolder(folderPath){
-    const folderData = await fs.promises.readdir(folderPath, {withFileTypes: true})
-    let result = {}
-    let fileArr = []
+// 폴더 탐색 (트리 구조 만들기)
+async function exploreFolder(folderPath) {
+    try {
+        const items = await fs.promises.readdir(folderPath, {withFileTypes: true});
+        const result = {};
 
-    for (const item of folderData) {
-        if(item.isDirectory() == true){
-            const itemPath = path.join(folderPath, item.name); // 하위 폴더의 path
-            result[item.name] = await exploreFolder(itemPath)
-        } else {
-            fileArr.push(item)
+        for (const item of items) {
+            const itemPath = path.join(folderPath, item.name);
+
+            if (item.isDirectory()) {
+                result[item.name] = await exploreFolder(itemPath); // 하위 폴더도 탐색
+            }
         }
+
+        // 현재 폴더의 파일들을 찾아서 해당 폴더 키 아래의 배열에 추가
+        const files = items.filter(item => !item.isDirectory());
+
+        if (Object.keys(result).length > 0 || files.length > 0) { // 하위 폴더가 있거나, 파일이 있는 경우
+
+            const folderResult = {};
+
+            if (Object.keys(result).length > 0) { // 하위 폴더가 있는 경우
+                folderResult.folders = result;
+            }
+
+            if (files.length > 0) { // 파일이 있는 경우
+                folderResult.files = files;
+            }
+
+            return folderResult;
+        } else {
+            return null; // 빈 폴더인 경우 null 반환
+        }
+    } catch (error) {
+        console.error('폴더 탐색 중 오류 발생:', error);
+        return null;
     }
-
-    if(fileArr.length !== 0){
-        result[folderPath] = {"files": fileArr}
     }
-
-    console.log(result)
-
-    return result
-}
 
 
 // 파일 선택
